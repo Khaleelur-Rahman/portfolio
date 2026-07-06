@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(run)",
+      "Bash(python3 -m http.server 8080)",
+      "Bash(chromium-cli http://localhost:8080/main.html --screenshot /tmp/pitch-initial.png --viewport 1200x800)",
+      "Bash(node -c main.html)",
+      "Bash(pkill -f \"http.server\")",
+      "Bash(curl -s http://localhost:8080/main.html)",
+      "Bash(cat)",
+      "Bash(node /tmp/test-assignment.js)",
+      "Bash(npm list *)",
+      "Bash(npm install *)",
+      "Bash(open http://localhost:8080/main.html)",
+      "Bash(bash /tmp/verify-css.sh)",
+      "Bash(pkill -f \"http.server 8080\")",
+      "Bash(cp \"/Users/khaleelur/Library/Containers/ru.keepcoder.Telegram/Data/tmp/IMAGE 2026-07-06 21:47:17.jpg\" \"/Users/khaleelur/Desktop/Projects/portfolio/player.jpg\")",
+      "Bash(cp \"/Users/khaleelur/Library/Containers/ru.keepcoder.Telegram/Data/tmp/IMAGE 2026-07-06 21:47:47.jpg\" \"/Users/khaleelur/Desktop/Projects/portfolio/contact.jpg\")",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(git push *)"
+    ]
+  }
+}
