@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khaleelur Rahman — Backend Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pitch-dark:#0A1F16;
+    --pitch-mid:#123B27;
+    --card-navy:#0E1626;
+    --gold:#D4AF37;
+    --gold-light:#F2DFA0;
+    --chalk:#F3F0E4;
+    --chalk-dim:#B9C4B9;
+    --red:#B3282D;
+    --line: rgba(243,240,228,0.12);
+    --fs-blue:#3B6CF4;
+    --fs-purple:#7B3FE4;
+    --fs-cyan:#5FE3E0;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:auto;}
+  html.lenis, html.lenis body{height:auto;}
+  .lenis.lenis-smooth{scroll-behavior:auto !important;}
+  .lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain;}
+  .lenis.lenis-stopped{overflow:hidden;}
+  body{
+    background:var(--pitch-dark);
+    color:var(--chalk);
+    font-family:'Inter',sans-serif;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+
+  @media (hover:hover) and (pointer:fine){
+    body{ cursor:none; }
+    a, button, .btn, .pack, .evo-card, .contact-mini a{ cursor:pointer !important; }
+  }
+  @media (hover:none), (pointer:coarse){ #customCursor{ display:none !important; } }
+  #customCursor{
+    position:fixed; top:0; left:0; width:0; height:0; pointer-events:none; z-index:9999;
+    opacity:0; transition:opacity .15s ease;
+  }
+  #customCursor .ball-spin{
+    position:absolute; top:-14px; left:-14px; width:28px; height:28px;
+    display:flex; align-items:center; justify-content:center; font-size:24px;
+    animation:spinBall 0.65s linear infinite;
+    filter:drop-shadow(0 3px 6px rgba(0,0,0,0.5));
+    transition:opacity .15s ease, transform .15s ease;
+  }
+  #customCursor.no-ball .ball-spin{ opacity:0; transform:scale(0.4); }
+  @keyframes spinBall{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+  h1,h2,h3, .display{ font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:0.03em; }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  @media (max-width:820px){.wrap{padding:0 24px;}}
+  @media (max-width:480px){.wrap{padding:0 18px;}}
+
+  body::before{
+    content:""; position:fixed; inset:0;
+    background: repeating-linear-gradient(90deg, rgba(255,255,255,0.015) 0 2px, transparent 2px 90px);
+    pointer-events:none; z-index:0;
+  }
+
+  /* floating stadium-light particles */
+  .lights{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;}
+  .lights span{
+    position:absolute; width:3px; height:3px; border-radius:50%;
+    background:var(--gold-light); opacity:0.4;
+    animation: drift 14s linear infinite;
+  }
+
+  @keyframes drift{
+    0%{ transform:translateY(0) translateX(0); opacity:0;}
+    10%{opacity:0.6;}
+    90%{opacity:0.3;}
+    100%{ transform:translateY(-100vh) translateX(30px); opacity:0;}
+  }
+  @keyframes floaty{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+  @keyframes pulseGlow{ 0%,100%{box-shadow:0 0 0 0 rgba(212,175,55,0.35);} 50%{box-shadow:0 0 0 14px rgba(212,175,55,0);} }
+  @keyframes shine-sweep{
+    0%{ transform:translate(-55%, 55%); }
+    100%{ transform:translate(55%, -55%); }
+  }
+  @keyframes fadeInUp{ from{opacity:0; transform:translateY(26px);} to{opacity:1; transform:translateY(0);} }
+  @keyframes popIn{ from{opacity:0; transform:scale(0.85);} to{opacity:1; transform:scale(1);} }
+
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .7s cubic-bezier(.2,.7,.3,1), transform .7s cubic-bezier(.2,.7,.3,1);}
+  .reveal.in-view{opacity:1; transform:translateY(0);}
+
+  /* NAV */
+  header{ position:sticky; top:0; z-index:300; background:rgba(10,31,22,0.85); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+  nav{ display:flex; align-items:center; justify-content:space-between; padding:18px 32px; max-width:1180px; margin:0 auto; }
+  .badge{display:flex; align-items:center; gap:10px; font-family:'Oswald'; font-weight:700; font-size:1.05rem;}
+  .badge .num{ color:var(--pitch-dark); background:var(--gold); width:30px; height:30px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:0.85rem; animation:pulseGlow 3s ease-in-out infinite; }
+  nav ul{list-style:none; display:flex; gap:26px;}
+  nav ul li{position:relative;}
+  nav ul a{font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--chalk-dim); text-decoration:none; transition:color .2s;}
+  nav ul a::after{content:""; position:absolute; left:0; bottom:-6px; width:0; height:1px; background:var(--gold-light); transition:width .25s ease;}
+  nav ul a:hover{color:var(--gold-light);}
+  nav ul a:hover::after{width:100%;}
+  .nav-hamburger{display:none; flex-direction:column; gap:5px; background:none; border:none; outline:none; cursor:pointer; padding:6px; -webkit-tap-highlight-color:transparent;}
+  .nav-hamburger span{display:block; width:22px; height:2px; background:var(--chalk); border-radius:2px; transition:transform .25s ease, opacity .25s ease;}
+  .nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .nav-hamburger.open span:nth-child(2){opacity:0;}
+  .nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  @keyframes mobileNavIn{ from{opacity:0; transform:translateY(-8px);} to{opacity:1; transform:translateY(0);} }
+  .mobile-nav{
+    display:none; position:fixed; top:54px; left:0; right:0;
+    background:var(--card-navy); z-index:200;
+    flex-direction:column; border-bottom:2px solid rgba(212,175,55,0.5);
+    box-shadow:0 8px 32px rgba(0,0,0,0.55);
+  }
+  .mobile-nav.open{display:flex; animation:mobileNavIn .22s ease both;}
+  .mobile-nav a{
+    font-family:'Oswald'; font-size:1rem; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--chalk); text-decoration:none; padding:18px 24px; display:block;
+    text-align:center; border-bottom:1px solid rgba(255,255,255,0.06);
+    transition:background .15s, color .15s;
+  }
+  .mobile-nav a:nth-child(odd){ background:rgba(18,59,39,0.5); }
+  .mobile-nav a:nth-child(even){ background:rgba(14,22,38,0.7); }
+  .mobile-nav a:last-child{ border-bottom:none; }
+  .mobile-nav a:hover, .mobile-nav a:active{ background:rgba(212,175,55,0.15); color:var(--gold-light); }
+  @media (max-width:820px){ nav ul{display:none;} .nav-hamburger{display:flex;} nav{padding:12px 20px;} }
+
+  /* HERO */
+  .hero{
+    position:relative; z-index:1; padding-top:48px; padding-bottom:48px;
+    display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center;
+    min-height:calc(100vh - 72px);
+  }
+  @media (max-width:900px){ .hero{grid-template-columns:1fr; padding-top:36px; padding-bottom:36px; min-height:calc(100vh - 72px);} }
+
+  .eyebrow{display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono'; font-size:0.72rem; letter-spacing:0.15em; color:var(--gold-light); text-transform:uppercase; margin-bottom:18px; line-height:1;}
+  .eyebrow::before{
+    content:""; flex-shrink:0; width:7px; height:7px; border-radius:50%;
+    background:var(--red); box-shadow:0 0 0 0 rgba(179,40,45,0.45);
+    animation:pulseGlow 2.4s ease-in-out infinite;
+  }
+  .hero h1{font-size:clamp(2.2rem, 4.6vw, 3.4rem); line-height:1.05; color:var(--chalk); margin-bottom:18px; animation:fadeInUp .8s ease both;}
+  .hero h1 span{color:var(--gold-light);}
+  .hero p{max-width:46ch; color:var(--chalk-dim); font-size:1.02rem; margin-bottom:26px; animation:fadeInUp .8s .1s ease both;}
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; animation:fadeInUp .8s .2s ease both;}
+  .btn{font-family:'Oswald'; text-transform:uppercase; letter-spacing:0.06em; font-size:0.8rem; padding:13px 24px; border-radius:3px; text-decoration:none; display:inline-block; transition:transform .15s, box-shadow .15s; border:1px solid transparent;}
+  .btn-primary{background:var(--gold); color:var(--pitch-dark); font-weight:600;}
+  .btn-primary:hover{transform:translateY(-3px); box-shadow:0 10px 22px rgba(212,175,55,0.3);}
+  .btn-ghost{border-color:var(--line); color:var(--chalk);}
+  .btn-ghost:hover{transform:translateY(-3px); border-color:var(--gold-light); color:var(--gold-light);}
+  .contact-mini{display:flex; gap:16px; flex-wrap:wrap; margin-top:22px; font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--chalk-dim); animation:fadeInUp .8s .3s ease both; word-break:break-all;}
+  .contact-mini a{text-decoration:none; border-bottom:1px dotted var(--line); padding-bottom:2px; transition:color .2s, border-color .2s;}
+  .contact-mini a:hover{color:var(--gold-light); border-color:var(--gold-light);}
+
+  /* ===================== FUT CARD (authentic shape) ===================== */
+  .card-stage{display:flex; justify-content:center; align-items:center; perspective:1400px; min-height:400px;}
+
+  /* pack (pre-reveal state) */
+  .pack{
+    width:210px; height:265px; border-radius:14px; cursor:pointer;
+    background:
+      linear-gradient(160deg, #2a2050 0%, #4a2f8a 45%, #1a1440 100%);
+    border:2px solid rgba(212,175,55,0.5);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;
+    box-shadow:0 30px 60px -20px rgba(123,63,228,0.5);
+    animation: floaty 3.4s ease-in-out infinite, pulseGlow 2.6s ease-in-out infinite;
+    transition: transform .4s ease, opacity .4s ease;
+  }
+  .pack:hover{transform:scale(1.04) rotate(-1deg);}
+  .pack .pack-badge{
+    width:64px; height:64px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--gold-light), var(--gold) 70%);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Oswald'; font-weight:700; color:#1a1440; font-size:1.3rem;
+  }
+  .pack-label{font-family:'Oswald'; letter-spacing:0.1em; color:var(--gold-light); font-size:0.85rem;}
+  .pack-sub{font-family:'JetBrains Mono'; font-size:0.65rem; color:rgba(255,255,255,0.6); letter-spacing:0.08em;}
+  .pack.opened{opacity:0; transform:scale(1.5); pointer-events:none;}
+
+  .card-frame{
+    width:302px; opacity:0; transform:scale(0.6) rotateY(90deg);
+    transition: opacity .5s ease, transform .6s cubic-bezier(.2,.8,.3,1.2);
+  }
+  .card-frame.revealed{opacity:1; transform:scale(1) rotateY(0deg);}
+
+  .card-clip{ clip-path: polygon(26% 0%, 50% 8%, 74% 0%, 100% 10%, 100% 87%, 50% 100%, 0% 87%, 0% 10%); }
+
+  .card-outer{
+    padding:7px;
+    background:linear-gradient(160deg, #f5e5a8, var(--gold) 40%, #8a6f1d 70%, var(--gold-light));
+  }
+  .card-inner{
+    position:relative; padding:30px 16px 28px;
+    background:
+      repeating-linear-gradient(115deg, rgba(255,255,255,0.05) 0 10px, transparent 10px 26px),
+      linear-gradient(160deg, var(--fs-purple) 0%, var(--fs-blue) 55%, #16204e 100%);
+    overflow:hidden;
+    min-height:378px;
+    display:flex; flex-direction:column;
+  }
+  .card-inner::after{
+    content:""; position:absolute; inset:-60%; pointer-events:none;
+    background:linear-gradient(125deg, transparent 44%, rgba(255,255,255,0.2) 50%, transparent 56%);
+    animation:shine-sweep 3.8s linear infinite;
+  }
+
+  .top-medal{
+    position:absolute; top:-4px; left:50%; transform:translate(-50%,-50%);
+    width:38px; height:38px; border-radius:50%; z-index:3;
+    background:radial-gradient(circle at 35% 30%, var(--gold-light), var(--gold) 75%);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Oswald'; font-weight:700; font-size:0.7rem; color:#1a1440;
+    box-shadow:0 4px 10px rgba(0,0,0,0.4);
+  }
+  .tier-pill{
+    text-align:center; margin-top:8px; margin-bottom:4px;
+    font-family:'JetBrains Mono'; font-size:0.56rem; letter-spacing:0.14em; color:var(--fs-cyan);
+  }
+
+  .card-body{display:flex; gap:8px; position:relative; z-index:1; flex-shrink:0;}
+  .card-left{display:flex; flex-direction:column; align-items:center; width:72px; flex-shrink:0;}
+  .card-left .ovr{font-family:'Oswald'; font-weight:700; font-size:2.15rem; color:#fff; line-height:1;}
+  .card-left .pos{font-family:'Oswald'; font-size:0.76rem; color:var(--fs-cyan); letter-spacing:0.05em; margin-bottom:4px;}
+  .divider-h{width:70%; height:1px; background:rgba(255,255,255,0.35); margin:5px 0;}
+  .flag-ic{font-size:1.25rem; margin-bottom:0;}
+  .club-ic{
+    width:32px; height:32px; border-radius:6px; display:flex; align-items:center; justify-content:center;
+    font-family:'Oswald'; font-weight:700; font-size:0.7rem; color:#fff;
+    background:linear-gradient(135deg,#000,#B3282D); margin-top:2px;
+  }
+
+  .card-right{flex:1; position:relative; display:flex; align-items:center; justify-content:center; min-height:108px;}
+  .glyph{ width:130px; height:155px; opacity:1; animation: floaty 4s ease-in-out infinite; filter:drop-shadow(0 8px 22px rgba(0,0,0,0.55)); object-fit:cover; object-position:center 18%; border-radius:6px; }
+  .contact-photo{ display:block; max-width:260px; width:100%; border-radius:10px; object-fit:contain; border:2px solid rgba(212,175,55,0.35); margin:0 auto 28px; filter:drop-shadow(0 6px 20px rgba(0,0,0,0.45)); }
+
+  .card-name{ text-align:center; font-family:'Oswald'; font-weight:700; font-size:1.35rem; letter-spacing:0.04em; color:#fff; margin-top:8px; position:relative; z-index:1; flex-shrink:0;}
+  .card-stats{
+    display:grid; grid-template-columns:1fr 1fr; column-gap:0; margin-top:10px; position:relative; z-index:1;
+    border-top:1px solid rgba(255,255,255,0.3); padding:10px 20px 0; flex-shrink:0;
+    width:100%; max-width:100%;
+  }
+  .stat-col{display:flex; flex-direction:column; gap:6px; justify-content:space-between;}
+  .stat-col:first-child{
+    border-right:1px solid rgba(255,255,255,0.25);
+    align-items:flex-start; padding-right:16px;
+  }
+  .stat-col:last-child{align-items:flex-end; padding-left:16px;}
+  .stat-line{display:flex; align-items:baseline; gap:6px; font-family:'JetBrains Mono'; width:100%;}
+  .stat-col:first-child .stat-line{justify-content:flex-start;}
+  .stat-col:last-child .stat-line{justify-content:flex-end;}
+  .stat-line .n{font-weight:700; font-size:1rem; color:#fff; width:auto; min-width:22px; text-align:right;}
+  .stat-line .l{font-size:0.68rem; color:rgba(255,255,255,0.75); letter-spacing:0.05em;}
+  .club-ic img{width:24px; height:24px; object-fit:contain; border-radius:4px; image-rendering:auto;}
+  .card-brand{
+    text-align:center; margin-top:auto; padding:10px 12px 2px;
+    font-family:'JetBrains Mono'; font-size:0.5rem; letter-spacing:0.08em;
+    color:rgba(255,255,255,0.55); position:relative; z-index:1; line-height:1.45;
+    display:flex; flex-direction:column; gap:1px; flex-shrink:0;
+  }
+
+  .tilt-hint{ text-align:center; margin-top:14px; font-family:'JetBrains Mono'; font-size:0.62rem; color:var(--chalk-dim); letter-spacing:0.08em; opacity:0; transition:opacity .4s ease .3s;}
+  .tilt-hint.show{opacity:0.7;}
+  .stat-legend{ text-align:center; margin-top:8px; font-family:'JetBrains Mono'; font-size:0.6rem; color:var(--chalk-dim); opacity:0.55; max-width:302px; margin-left:auto; margin-right:auto; line-height:1.6;}
+
+  /* SECTIONS */
+  .section{
+    padding:48px 0; position:relative; z-index:1;
+    min-height:calc(100vh - 72px);
+    display:flex; flex-direction:column; justify-content:center;
+  }
+  .section > .wrap{width:100%;}
+  .section-head{margin-bottom:34px; max-width:640px;}
+  .section-head .eyebrow{margin-bottom:10px;}
+  .section-head h2{font-size:clamp(1.5rem,3vw,2rem); color:var(--chalk);}
+  .section-head p{color:var(--chalk-dim); margin-top:10px; font-size:0.94rem;}
+
+  /* larger type from Formation section onward */
+  #formation, #transfers, #achievements, #duty, #contact{
+    font-size:1.08rem;
+  }
+  #formation .section-head h2, #transfers .section-head h2, #achievements .section-head h2,
+  #duty .section-head h2, #contact .section-head h2{
+    font-size:clamp(1.65rem,3.2vw,2.15rem);
+  }
+  #formation .section-head p, #transfers .section-head p, #achievements .section-head p,
+  #duty .section-head p, #contact .section-head p{font-size:1.02rem;}
+  #formation .eyebrow, #transfers .eyebrow, #achievements .eyebrow,
+  #duty .eyebrow, #contact .eyebrow{font-size:0.78rem;}
+
+  /* ===== FORMATION (interactive pitch with drag-and-drop) ===== */
+  .formation-selector{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:22px;}
+  .form-btn{
+    background:rgba(14,22,38,0.6); border:2px solid var(--gold);
+    padding:7px 16px; border-radius:8px; font-family:'Oswald'; font-size:0.8rem;
+    text-transform:uppercase; letter-spacing:0.05em; color:var(--chalk);
+    cursor:pointer; transition: all .2s ease;
+  }
+  .form-btn:hover{background:rgba(14,22,38,0.9); box-shadow:0 0 12px rgba(212,175,55,0.3);}
+  .form-btn.active{background:var(--gold); color:var(--pitch-dark); box-shadow:0 0 16px rgba(212,175,55,0.5);}
+
+  /* side-by-side layout */
+  .tactical-layout{display:flex; gap:20px; align-items:stretch;}
+  .pitch-side{flex:1; min-width:0; display:flex; flex-direction:column; gap:12px;}
+  .pool-side{
+    width:310px; flex-shrink:0; display:flex; flex-direction:column; gap:0;
+  }
+  @media(max-width:800px){
+    .tactical-layout{flex-direction:column;}
+    .pool-side{width:100%;}
+  }
+
+  /* team OVR banner */
+  .team-ovr-banner{
+    display:flex; align-items:center; gap:14px;
+    background:rgba(14,22,38,0.8); border:1px solid var(--line);
+    border-radius:10px; padding:10px 20px;
+  }
+  .tob-label{font-family:'JetBrains Mono'; font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--chalk-dim);}
+  .tob-num{font-family:'Oswald'; font-size:2rem; font-weight:700; color:var(--gold); line-height:1;}
+  .tob-sub{font-family:'JetBrains Mono'; font-size:0.65rem; color:var(--chalk-dim); margin-left:auto;}
+
+  .pitch-wrap{
+    background:
+      repeating-linear-gradient(180deg, rgba(255,255,255,0.028) 0 50px, transparent 50px 100px),
+      linear-gradient(180deg, #0b2719 0%, #14422c 50%, #0b2719 100%);
+    border:2px solid rgba(255,255,255,0.14); border-radius:14px; position:relative;
+    padding:28px 16px 22px; overflow:hidden;
+    flex:1; display:flex; align-items:center;
+  }
+  .pitch-wrap::before{content:""; position:absolute; left:50%; top:50%; width:120px; height:120px; border:2px solid rgba(255,255,255,0.16); border-radius:50%; transform:translate(-50%,-50%); pointer-events:none; z-index:0;}
+  .pitch-wrap::after{content:""; position:absolute; left:4%; right:4%; top:50%; height:2px; background:rgba(255,255,255,0.16); pointer-events:none; z-index:0;}
+
+  .pitch-grid{
+    display:flex; flex-direction:column; gap:12px;
+    position:relative; z-index:1; padding:8px 0 4px;
+    align-items:center; width:100%;
+  }
+  .pitch-row{display:flex; gap:10px; justify-content:center; align-items:flex-start;}
+
+  /* ─── JERSEY SHAPE (shared by pitch + pool) ─── */
+  @keyframes jerseyShake{0%,100%{transform:translateX(0) scale(1);}25%{transform:translateX(-5px) scale(1.02);}75%{transform:translateX(5px) scale(1.02);}}
+
+  .jersey{
+    width:88px; height:106px;
+    clip-path: polygon(22% 0%, 78% 0%, 100% 20%, 80% 27%, 80% 100%, 20% 100%, 20% 27%, 0% 20%);
+    background: var(--jbg, rgba(243,240,228,0.07));
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding-top:20px; gap:1px;
+    cursor:pointer; user-select:none; flex-shrink:0;
+    transition: filter .18s ease, transform .18s ease;
+    filter: drop-shadow(0 0 4px var(--jglow, rgba(243,240,228,0.25)));
+  }
+  .jersey:hover{
+    filter: drop-shadow(0 0 11px var(--jglow, rgba(243,240,228,0.5)));
+    transform: translateY(-5px) scale(1.06);
+  }
+  .jersey.j-dragover{
+    filter: drop-shadow(0 0 20px var(--jglow, rgba(243,240,228,0.9)));
+    transform: scale(1.08);
+  }
+  .jersey.j-invalid{
+    filter: drop-shadow(0 0 16px rgba(255,60,60,0.8));
+    transform: scale(1.04);
+  }
+  .jersey.j-reject{ animation: jerseyShake 0.28s ease; }
+
+  /* empty pitch slots: position-tinted */
+  .jersey.j-empty{ cursor:default; }
+  .jersey.j-empty:hover{ transform:none; filter:drop-shadow(0 0 4px var(--jglow, rgba(243,240,228,0.25))); }
+  .jersey.j-empty.j-dragover{ cursor:copy; }
+  .jersey.j-filled{ cursor:grab; }
+
+  /* jersey text */
+  .j-rating{
+    font-family:'Oswald'; font-weight:700; font-size:1.5rem; line-height:1;
+    color:var(--jtext, var(--chalk)); letter-spacing:-0.01em;
+  }
+  .j-name{
+    font-family:'Oswald'; font-weight:600; font-size:0.56rem;
+    text-transform:uppercase; letter-spacing:0.05em;
+    color:var(--jtext, var(--chalk)); opacity:0.92;
+    max-width:62px; text-align:center; overflow:hidden;
+    white-space:nowrap; text-overflow:ellipsis; line-height:1.2; margin-top:2px;
+  }
+  .j-pos{
+    font-family:'JetBrains Mono'; font-size:0.48rem;
+    color:var(--jtext, var(--chalk)); opacity:0.65;
+    letter-spacing:0.1em; margin-top:1px;
+  }
+  /* placeholder text inside empty slot */
+  .j-placeholder{
+    font-family:'JetBrains Mono'; font-size:0.7rem; letter-spacing:0.14em;
+    color:var(--jtext, rgba(243,240,228,0.28)); text-transform:uppercase; font-weight:700;
+    padding-top:6px;
+  }
+
+  /* pool sidebar */
+  .skills-pool-label{
+    font-family:'JetBrains Mono'; font-size:0.66rem; letter-spacing:0.15em;
+    color:var(--chalk-dim); text-transform:uppercase; text-align:center;
+    padding:12px 0 10px;
+    border-bottom:1px solid var(--line); margin-bottom:12px;
+  }
+  .skills-pool{
+    padding:4px 8px 16px; background:rgba(10,31,22,0.65);
+    border:1px dashed rgba(243,240,228,0.16); border-radius:12px;
+    display:flex; flex-direction:column; gap:14px;
+    max-height:680px; overflow-y:auto; overflow-x:hidden;
+  }
+  .skills-pool::-webkit-scrollbar{width:4px;}
+  .skills-pool::-webkit-scrollbar-track{background:transparent;}
+  .skills-pool::-webkit-scrollbar-thumb{background:var(--gold); border-radius:2px; opacity:0.4;}
+  .pool-group{ display:flex; flex-direction:column; gap:8px; padding-top:10px; }
+  .pool-cat-label{
+    font-family:'JetBrains Mono'; font-size:0.58rem; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--chalk-dim); opacity:0.75;
+    padding-left:6px; border-left:2px solid var(--gold);
+  }
+  .pool-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .pool-empty{
+    font-family:'JetBrains Mono'; font-size:0.78rem; color:var(--gold);
+    text-align:center; padding:28px 0; opacity:0.8; width:100%;
+  }
+
+  .legend-row{display:flex; gap:18px; flex-wrap:wrap; margin-top:20px; font-family:'JetBrains Mono'; font-size:0.78rem; color:var(--chalk-dim);}
+  .legend-row .dot{display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:5px; vertical-align:middle;}
+
+  /* ===== TRANSFERS — FUT EVOLUTIONS TIMELINE ===== */
+  .evo-chain{ position:relative; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--card-navy); }
+
+  .evo-ball-strip{
+    position:relative; height:88px;
+    background:linear-gradient(180deg, #0c1424 0%, var(--pitch-mid) 100%);
+    border-bottom:1px solid var(--line); overflow:hidden;
+  }
+  .evo-ball-strip::after{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(ellipse 60% 80% at 50% 100%, rgba(212,175,55,0.08), transparent);
+    pointer-events:none;
+  }
+  .evo-ball-strip canvas{width:100% !important; height:100% !important; display:block;}
+
+  .evo-path{
+    position:relative; height:38px; background:var(--pitch-mid);
+    border-bottom:1px solid var(--line); overflow:hidden;
+  }
+  .evo-path::before{
+    content:""; position:absolute; left:40px; right:40px; top:50%; height:2px;
+    background:repeating-linear-gradient(90deg, rgba(243,240,228,0.12) 0 8px, transparent 8px 16px);
+    transform:translateY(-50%);
+  }
+  .evo-path-fill{
+    position:absolute; left:40px; top:50%; height:3px; max-width:calc(100% - 80px);
+    background:linear-gradient(90deg, var(--gold), var(--gold-light), var(--fs-cyan));
+    transform:translateY(-50%); width:0%;
+    box-shadow:0 0 12px rgba(212,175,55,0.5);
+    transition:width .9s cubic-bezier(.25,.8,.25,1);
+  }
+  .evo-path-nodes{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:space-between;
+    padding:0 28px; pointer-events:none; height:100%;
+  }
+  .evo-node{
+    width:12px; height:12px; border-radius:50%; background:var(--card-navy);
+    border:2px solid rgba(243,240,228,0.25); flex-shrink:0; box-sizing:border-box;
+    transition:border-color .35s ease, box-shadow .35s ease, background .35s ease;
+  }
+  .evo-node.lit{
+    border-color:var(--gold); background:rgba(212,175,55,0.15);
+    box-shadow:0 0 0 3px rgba(212,175,55,0.25), 0 0 12px rgba(212,175,55,0.55);
+  }
+
+  .evo-stage{ perspective:1400px; padding:8px 0 4px; background:linear-gradient(180deg, var(--card-navy), #0a121e); }
+  .evo-scroll{
+    display:flex; align-items:center; gap:0; overflow-x:auto; scroll-snap-type:x proximity;
+    padding:28px 72px 36px; scrollbar-width:thin; scrollbar-color:var(--gold) transparent;
+    transform-style:preserve-3d; scroll-behavior:smooth;
+  }
+  .evo-scroll::-webkit-scrollbar{height:6px;}
+  .evo-scroll::-webkit-scrollbar-thumb{background:rgba(212,175,55,0.4); border-radius:3px;}
+
+  .evo-link{
+    flex:0 0 44px; display:flex; align-items:center; justify-content:center;
+    position:relative; height:60px; transform-style:preserve-3d;
+  }
+  .evo-link svg{ width:28px; height:28px; opacity:0.35; transition:opacity .3s, filter .3s; }
+  .evo-link.lit svg{ opacity:1; filter:drop-shadow(0 0 6px rgba(212,175,55,0.7)); animation:linkPulse 1.8s ease-in-out infinite; }
+  @keyframes linkPulse{ 0%,100%{transform:translateX(0);} 50%{transform:translateX(3px);} }
+
+  .evo-card{
+    flex:0 0 auto; width:172px; scroll-snap-align:center; cursor:pointer;
+    transform:scale(0.92); opacity:0.55;
+    transition:transform .3s ease, opacity .3s ease, filter .3s ease;
+    filter:grayscale(0.6) brightness(0.75);
+  }
+  .evo-card.past{ transform:scale(0.96); opacity:0.72; filter:grayscale(0.3) brightness(0.9); }
+  .evo-card.active{ transform:scale(1); opacity:1; filter:none; z-index:2; }
+  .evo-card.future{ transform:scale(0.92); opacity:0.5; }
+  .evo-card:hover:not(.active){ transform:scale(0.96); opacity:0.8; }
+
+  .evo-card-body{ transition:transform .3s ease; }
+  .evo-card.evo-reveal .evo-card-body{ animation:evoPop .5s cubic-bezier(.2,.8,.3,1.2) both; }
+  @keyframes evoPop{
+    0%{ transform:scale(0.92) rotateX(12deg); }
+    60%{ transform:scale(1.04) rotateX(-4deg); }
+    100%{ transform:scale(1) rotateX(0deg); }
+  }
+
+  .evo-clip{ clip-path:polygon(26% 0%, 50% 8%, 74% 0%, 100% 12%, 100% 91%, 50% 100%, 0% 91%, 0% 12%); }
+  .evo-outer{
+    padding:4px;
+    background:linear-gradient(160deg, #6b6b6b, #3c3c3c 60%, #8a8a8a);
+    transition:background .3s ease;
+  }
+  .evo-card.active .evo-outer,
+  .evo-card.past .evo-outer{
+    background:linear-gradient(160deg, #f5e5a8, var(--gold) 45%, #8a6f1d 75%, var(--gold-light));
+  }
+
+  .evo-inner{
+    position:relative; padding:26px 10px 22px; text-align:center; overflow:hidden;
+    background:linear-gradient(160deg, #3a3f4d, #21242e 70%);
+    transition:background .3s ease;
+  }
+  .evo-card.active .evo-inner,
+  .evo-card.past .evo-inner{
+    background:
+      repeating-linear-gradient(115deg, rgba(255,255,255,0.04) 0 8px, transparent 8px 20px),
+      linear-gradient(160deg, var(--fs-purple) 0%, var(--fs-blue) 55%, #16204e 100%);
+  }
+  .evo-inner::after{
+    content:""; position:absolute; inset:-60%; pointer-events:none; opacity:0;
+    background:linear-gradient(125deg, transparent 44%, rgba(255,255,255,0.22) 50%, transparent 56%);
+  }
+  .evo-card.active .evo-inner::after{ opacity:1; animation:shine-sweep 3.8s linear infinite; }
+
+  .evo-tag{
+    display:block; margin:0 auto 6px; width:fit-content;
+    font-family:'JetBrains Mono'; font-size:0.52rem; letter-spacing:0.1em;
+    color:var(--fs-cyan); background:rgba(0,0,0,0.4); padding:2px 7px; border-radius:3px;
+    position:relative; z-index:2;
+  }
+  .evo-up{
+    position:absolute; top:8px; right:8px; font-family:'Oswald'; font-size:0.62rem;
+    color:#4ade80; opacity:0; transform:translateY(6px); transition:opacity .3s, transform .3s; z-index:3;
+  }
+  .evo-card.evo-reveal .evo-up{ opacity:1; transform:translateY(0); }
+
+  .evo-ovr{
+    font-family:'Oswald'; font-weight:700; font-size:1.7rem; color:#fff; line-height:1;
+    margin-top:8px; position:relative; z-index:1;
+  }
+  .evo-ovr.counting{ animation:ovrFlash .6s ease; }
+  @keyframes ovrFlash{
+    0%,100%{ text-shadow:none; }
+    40%{ text-shadow:0 0 18px rgba(95,227,224,0.9); color:var(--fs-cyan); }
+  }
+  .evo-pos{font-family:'Oswald'; font-size:0.68rem; color:var(--fs-cyan); letter-spacing:0.05em; margin-bottom:8px; position:relative; z-index:1;}
+  .evo-crest{
+    width:38px; height:38px; margin:0 auto 8px; border-radius:6px; background:#fff;
+    display:flex; align-items:center; justify-content:center; overflow:hidden; position:relative; z-index:1;
+    padding:4px;
+  }
+  .evo-crest img{width:100%; height:100%; object-fit:contain;}
+  .evo-crest .fb{font-family:'Oswald'; font-weight:700; color:#111; font-size:0.75rem; width:100%; height:100%; align-items:center; justify-content:center;}
+  .evo-detail-crest .fb{font-family:'Oswald'; font-weight:700; color:#111; font-size:0.85rem; width:100%; height:100%; align-items:center; justify-content:center;}
+  .evo-club{font-family:'Oswald'; font-weight:600; font-size:0.78rem; color:#fff; letter-spacing:0.01em; margin-bottom:6px; line-height:1.15; position:relative; z-index:1;}
+  .evo-highlight{
+    font-family:'JetBrains Mono'; font-size:0.6rem; color:var(--gold-light);
+    background:rgba(212,175,55,0.14); border:1px solid rgba(212,175,55,0.3);
+    border-radius:4px; padding:4px 6px; margin-bottom:8px; line-height:1.3; position:relative; z-index:1;
+  }
+  .evo-dates{font-family:'JetBrains Mono'; font-size:0.56rem; color:rgba(255,255,255,0.55); letter-spacing:0.04em; position:relative; z-index:1;}
+
+  .evo-detail{
+    margin-top:24px; background:var(--card-navy); border:1px solid var(--line); border-radius:8px; padding:28px 30px;
+    display:grid; grid-template-columns:64px 1fr; gap:20px; align-items:start;
+    animation: fadeInUp .4s ease both;
+  }
+  @media (max-width:600px){ .evo-detail{grid-template-columns:48px 1fr;} }
+  .evo-detail-crest{ width:64px; height:64px; border-radius:8px; background:#fff; display:flex; align-items:center; justify-content:center; overflow:hidden; flex-shrink:0; padding:6px;}
+  .evo-detail-crest img{width:100%; height:100%; object-fit:contain; image-rendering:auto;}
+  .evo-detail h3{font-size:1.3rem; color:var(--chalk); margin-bottom:4px;}
+  .evo-detail .evo-detail-meta{display:flex; gap:12px; flex-wrap:wrap; font-family:'JetBrains Mono'; font-size:0.85rem; color:var(--chalk-dim); margin-bottom:12px;}
+  .evo-detail .evo-detail-meta .role{color:var(--gold-light);}
+  .evo-detail ul{color:var(--chalk-dim); font-size:1rem; padding-left:20px; display:flex; flex-direction:column; gap:8px; line-height:1.55;}
+  .evo-detail ul li::marker{color:var(--gold);}
+  .evo-hint{ text-align:center; font-family:'JetBrains Mono'; font-size:0.72rem; color:var(--chalk-dim); opacity:0.6; margin-top:10px;}
+
+  /* ===== ACHIEVEMENTS ===== */
+  .trophy-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media (max-width:700px){.trophy-grid{grid-template-columns:1fr;}}
+  .trophy{ background:var(--card-navy); border:1px solid var(--line); border-radius:8px; padding:26px; position:relative; overflow:hidden; transition:transform .3s ease, border-color .3s ease;}
+  .trophy:hover{transform:translateY(-6px); border-color:rgba(212,175,55,0.4);}
+  .trophy::before{content:""; position:absolute; top:-40px; right:-40px; width:120px; height:120px; border-radius:50%; background:radial-gradient(circle, rgba(212,175,55,0.15), transparent 70%);}
+  .trophy-icon{font-size:1.8rem; margin-bottom:10px; display:block; transition:transform .3s ease;}
+  .trophy:hover .trophy-icon{transform:scale(1.08);}
+  .trophy-award{font-family:'JetBrains Mono'; font-size:0.76rem; letter-spacing:0.12em; color:var(--gold); text-transform:uppercase; margin-bottom:8px;}
+  .trophy h3{font-size:1.28rem; color:var(--chalk); margin-bottom:10px;}
+  .trophy p{color:var(--chalk-dim); font-size:0.98rem; margin-bottom:14px; line-height:1.55;}
+  .tags{display:flex; gap:8px; flex-wrap:wrap;}
+  .tag{font-family:'JetBrains Mono'; font-size:0.74rem; color:var(--chalk-dim); border:1px solid var(--line); padding:3px 8px; border-radius:3px;}
+
+  /* ===== INTERNATIONAL DUTY ===== */
+  .caps-card{background:var(--card-navy); border:1px solid var(--line); border-radius:8px; padding:30px; display:grid; grid-template-columns:1fr auto; gap:20px; align-items:center;}
+  @media (max-width:640px){.caps-card{grid-template-columns:1fr;}}
+  .caps-card h3{font-size:1.2rem; color:var(--chalk); margin-bottom:6px;}
+  .caps-card .sub{font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--chalk-dim); margin-bottom:14px;}
+  .caps-card ul{list-style:none; display:flex; flex-direction:column; gap:6px;}
+  .caps-card li{font-size:0.87rem; color:var(--chalk-dim);}
+  .caps-card li b{color:var(--chalk); font-weight:500;}
+  .gpa-stat{text-align:center; background:rgba(212,175,55,0.08); border:1px solid rgba(212,175,55,0.3); border-radius:8px; padding:26px 30px; max-width:220px;}
+  .gpa-stat .num{font-family:'Oswald'; font-size:1.5rem; font-weight:700; color:var(--gold-light); letter-spacing:0.04em;}
+  .gpa-stat .lbl{font-family:'JetBrains Mono'; font-size:0.62rem; letter-spacing:0.1em; color:var(--chalk-dim); margin-top:6px;}
+
+  .jersey-wrap{ perspective:900px; }
+  .jersey-svg{ width:190px; height:auto; display:block; animation: jerseySway 5s ease-in-out infinite; transform-origin:top center; transition: transform .3s ease; filter:drop-shadow(0 14px 24px rgba(0,0,0,0.4)); }
+  .jersey-wrap:hover .jersey-svg{ transform:rotate(0deg) scale(1.04); animation-play-state:paused; }
+  @keyframes jerseySway{ 0%,100%{transform:rotate(-2deg);} 50%{transform:rotate(2deg);} }
+
+  /* CONTACT */
+  .fulltime{
+    text-align:center; padding:48px 0;
+    position:relative; z-index:1;
+    min-height:calc(100vh - 72px);
+    display:flex; flex-direction:column; justify-content:center; align-items:center;
+  }
+  .fulltime > .wrap{width:100%;}
+  .fulltime .eyebrow{justify-content:center;}
+  .fulltime h2{font-size:clamp(1.8rem,4.5vw,2.7rem); margin:14px 0 16px;}
+  .fulltime p{color:var(--chalk-dim); max-width:44ch; margin:0 auto 30px;}
+  .contact-row{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+
+  footer{border-top:1px solid var(--line); padding:24px 0; text-align:center; font-family:'JetBrains Mono'; font-size:0.68rem; color:var(--chalk-dim); letter-spacing:0.08em;}
+
+  /* ===== MOBILE RESPONSIVE ===== */
+  @media (max-width:600px){
+    nav{ padding:14px 20px; }
+    .badge{ font-size:0.88rem; }
+    .badge .num{ width:24px; height:24px; font-size:0.72rem; }
+
+    h1{ font-size:clamp(1.6rem, 7vw, 2.4rem); }
+    .hero{ gap:28px; padding-top:28px; padding-bottom:28px; }
+    .cta-row{ flex-direction:column; align-items:flex-start; }
+
+    /* formation section */
+    .form-btn{ padding:5px 11px; font-size:0.72rem; }
+    .jersey{ width:68px; height:82px; }
+    .j-rating{ font-size:1.2rem; }
+    .j-name{ font-size:0.48rem; max-width:50px; }
+    .j-pos{ font-size:0.4rem; }
+    .j-placeholder{ font-size:0.58rem; }
+    .skills-pool{ grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); }
+
+    /* evo chain */
+    .evo-outer, .evo-inner{ min-height:unset; }
+    .evo-rating-block{ gap:4px; }
+    .evo-ovr{ font-size:2rem; }
+    .evo-detail-grid{ grid-template-columns:1fr; }
+
+    /* trophy */
+    .trophy-grid{ grid-template-columns:1fr; }
+    .trophy{ padding:18px; }
+
+    /* fulltime contact */
+    .fulltime h2{ font-size:clamp(1.4rem,6vw,2rem); }
+    .contact-row{ flex-direction:column; align-items:center; }
+
+    /* team OVR banner */
+    .team-ovr-banner{ flex-wrap:wrap; padding:8px 14px; gap:8px; }
+    .tob-num{ font-size:1.5rem; }
+  }
+
+  @media (max-width:480px){
+    .jersey{ width:58px; height:70px; }
+    .j-rating{ font-size:1rem; }
+    .evo-scroll{ gap:14px; padding:28px 14px 28px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="customCursor"><span class="ball-spin">⚽</span></div>
+<div class="lights" id="lights"></div>
+
+<header>
+  <nav>
+    <div class="badge"><span class="num">89</span> KHALEELUR RAHMAN</div>
+    <ul>
+      <li><a href="#formation">Skills</a></li>
+      <li><a href="#transfers">Transfers</a></li>
+      <li><a href="#achievements">Achievements</a></li>
+      <li><a href="#duty">Nat'l Duty</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#formation">Skills</a>
+    <a href="#transfers">Transfers</a>
+    <a href="#achievements">Achievements</a>
+    <a href="#duty">Nat'l Duty</a>
+    <a href="#contact">Contact</a>
+  </div>
+</header>
+
+<section class="wrap hero">
+  <div>
+    <div class="eyebrow">NUS Class of 2026 · Backend Engineer @ TikTok Shop</div>
+    <h1>Backend engineer,<br>reads the game <span>three moves ahead</span>.</h1>
+    <p>Quick off the mark, comfortable with the ball at feet, always looking for the pass that ends in production. Plays as a LW with a knack for the final goal to win the game.</p>
+    <div class="cta-row">
+      <a href="#transfers" class="btn btn-primary">View Transfer History</a>
+      <a href="#contact" class="btn btn-ghost">Contact Player</a>
+    </div>
+    <div class="contact-mini">
+      <a href="https://www.linkedin.com/in/khaleelur-rahman-a79284262">linkedin.com/in/khaleelur-rahman</a>
+      <a href="https://github.com/Khaleelur-Rahman">github.com/Khaleelur-Rahman</a>
+    </div>
+  </div>
+
+  <div class="card-stage" id="cardStage">
+    <div class="pack" id="pack">
+      <div class="pack-badge">89</div>
+      <div class="pack-label">TAP TO REVEAL</div>
+      <div class="pack-sub">FUTURE STARS · CARD</div>
+    </div>
+
+    <div class="card-frame" id="cardFrame">
+      <div class="card-outer card-clip">
+        <div class="card-inner card-clip">
+          <div class="top-medal">KR</div>
+          <div class="tier-pill">FUTURE STARS</div>
+
+          <div class="card-body">
+            <div class="card-left">
+              <div class="ovr" id="ovrNum">0</div>
+              <div class="pos">LW</div>
+              <div class="divider-h"></div>
+              <div class="flag-ic">🇸🇬</div>
+              <div class="divider-h"></div>
+              <div class="club-ic">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Ionicons_logo-tiktok.svg/1280px-Ionicons_logo-tiktok.svg.png?_=20230423144016" alt="TikTok" width="64" height="64" decoding="async" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=tiktok.com&sz=128';">
+              </div>
+            </div>
+            <div class="card-right">
+              <img class="glyph" src="player.jpg" alt="Khaleelur Rahman">
+            </div>
+          </div>
+
+          <div class="card-name">KHALEELUR RAHMAN</div>
+          <div class="card-stats">
+            <div class="stat-col">
+              <div class="stat-line"><span class="n count" data-target="90">88</span><span class="l">PAC</span></div>
+              <div class="stat-line"><span class="n count" data-target="90">99</span><span class="l">SHO</span></div>
+              <div class="stat-line"><span class="n count" data-target="89">89</span><span class="l">PAS</span></div>
+            </div>
+            <div class="stat-col">
+              <div class="stat-line"><span class="n count" data-target="88">99</span><span class="l">DRI</span></div>
+              <div class="stat-line"><span class="n count" data-target="88">58</span><span class="l">DEF</span></div>
+              <div class="stat-line"><span class="n count" data-target="87">77</span><span class="l">PHY</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tilt-hint" id="tiltHint">hover over the card</div>
+      <div class="stat-legend">PAC Shipping Speed · SHO Feature Delivery · PAS API Design · DRI Problem-Solving · DEF Debugging · PHY System Design</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="formation">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">The Skill Sheet</div>
+      <h2>Build the perfect skill set</h2>
+      <p>Pick your formation and drag skills onto the pitch. Assign your arsenal to the right positions.</p>
+    </div>
+
+    <div class="formation-selector" id="formationSelector"></div>
+
+    <div class="tactical-layout">
+      <div class="pitch-side">
+        <div class="team-ovr-banner">
+          <span class="tob-label">TEAM OVR</span>
+          <span class="tob-num" id="teamOvr">--</span>
+          <span class="tob-sub" id="teamPlaced">0 / 11 placed</span>
+        </div>
+        <div class="pitch-wrap">
+          <div class="pitch-grid" id="pitchGrid"></div>
+        </div>
+      </div>
+      <div class="pool-side">
+        <div class="skills-pool-label">Squad — Drag to Pitch</div>
+        <div class="skills-pool" id="skillsPool"></div>
+      </div>
+    </div>
+
+    <div class="legend-row reveal">
+      <span><span class="dot" style="background:#D4AF37"></span>ATT — Frontend / Mobile</span>
+      <span><span class="dot" style="background:#5B8CFF"></span>MID — Languages / Backend / API</span>
+      <span><span class="dot" style="background:#E0574F"></span>DEF — Cloud / Databases / DevOps</span>
+      <span><span class="dot" style="background:#3CB371"></span>GK — Architecture</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="transfers">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Transfer History</div>
+      <h2>Evolution Chain</h2>
+      <p>From academy call-up to permanent transfer.</p>
+    </div>
+
+    <div class="evo-chain reveal" id="evoChain">
+      <div class="evo-ball-strip"><canvas id="evoBallCanvas"></canvas></div>
+
+      <div class="evo-path">
+        <div class="evo-path-fill" id="evoPathFill"></div>
+        <div class="evo-path-nodes" id="evoPathNodes"></div>
+      </div>
+
+      <div class="evo-stage">
+        <div class="evo-scroll" id="evoScroll" data-lenis-prevent></div>
+      </div>
+
+      <div class="evo-detail" id="evoDetail"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="achievements">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Trophy Cabinet</div>
+      <h2>Achievements</h2>
+      <p>Personal projects, silverware earned outside of club duty.</p>
+    </div>
+
+    <div class="trophy-grid">
+      <div class="trophy reveal">
+        <span class="trophy-icon">🏆</span>
+        <div class="trophy-award">Golden Boot — Most Complete Build</div>
+        <h3>JobTrackedIn</h3>
+        <p>Full-stack social platform for job hunting: real-time activity feeds, tiered privacy controls, priority-based reminders, and a paginated dashboard with role-based auth. Deployed with automated CI/CD across Render &amp; Vercel.</p>
+        <div class="tags"><span class="tag">Spring Boot</span><span class="tag">Next.js</span><span class="tag">Tailwind</span><span class="tag">OAuth 2.0</span><span class="tag">PostgreSQL</span></div>
+      </div>
+
+      <div class="trophy reveal">
+        <span class="trophy-icon">🎖️</span>
+        <div class="trophy-award">Community Shield — 100+ Active Users</div>
+        <h3>NUS Musollahs Finder Bot</h3>
+        <p>Telegram bot using live location sharing to instantly surface the nearest prayer space and directions. Reduce user effort and improved accessibility for the NUS Muslim community.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">Google Maps API</span><span class="tag">Geopy</span><span class="tag">PostgreSQL</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="duty">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">International Duty</div>
+      <h2>The one shirt that never changes</h2>
+      <p>Every loan spell runs alongside the same national team.</p>
+    </div>
+
+    <div class="caps-card reveal">
+      <div>
+        <h3>National University of Singapore</h3>
+        <div class="sub">Bachelor of Computing, Minor in Management · Aug 2022 – Jul 2026</div>
+        <ul>
+          <li><b>Core caps:</b> Data Structures &amp; Algorithms, Operating Systems, Computer Networks, Database Management</li>
+          <li><b>Squad depth:</b> Programming Methodology, Computer Organization, Database Systems Implementation</li>
+        </ul>
+      </div>
+      <div class="jersey-wrap">
+        <svg class="jersey-svg" viewBox="0 0 240 280" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="jerseyGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1a4a30"/>
+              <stop offset="100%" stop-color="#0a1f16"/>
+            </linearGradient>
+          </defs>
+          <path d="M90,8 Q120,26 150,8 L185,18 L240,55 L240,110 L200,95 L200,270 L40,270 L40,95 L0,110 L0,55 L55,18 Z"
+                fill="url(#jerseyGrad)" stroke="#D4AF37" stroke-width="3"/>
+          <path d="M90,8 Q120,26 150,8" fill="none" stroke="#D4AF37" stroke-width="4"/>
+          <line x1="1.5" y1="56" x2="1.5" y2="109" stroke="#D4AF37" stroke-width="4"/>
+          <line x1="238.5" y1="56" x2="238.5" y2="109" stroke="#D4AF37" stroke-width="4"/>
+          <text x="120" y="88" text-anchor="middle" font-family="Oswald, sans-serif" font-weight="700" font-size="32" letter-spacing="3" fill="#F2DFA0">NUS</text>
+          <text x="120" y="168" text-anchor="middle" font-family="Oswald, sans-serif" font-weight="700" font-size="80" fill="none" stroke="#F2DFA0" stroke-width="2.5">11</text>
+          <text x="120" y="212" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="14" letter-spacing="2.5" fill="#D4AF37">HONOURS</text>
+          <text x="120" y="230" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8.5" letter-spacing="1" fill="#B9C4B9">(HIGHEST DISTINCTION)</text>
+          <text x="120" y="256" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8" letter-spacing="1.5" fill="#B9C4B9" opacity="0.7">NUS · CLASS OF 2026</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fulltime" id="contact">
+  <div class="wrap reveal">
+    <img class="contact-photo" src="contact.jpg" alt="Khaleelur Rahman">
+    <div class="eyebrow">Full Time</div>
+    <h2>Always happy to connect.</h2>
+    <p>Whether it's distributed systems, backend engineering, or just talking football, feel free to reach out.</p>
+    <div class="contact-row">
+      <a href="https://www.linkedin.com/in/khaleelur-rahman-a79284262" class="btn btn-primary">LinkedIn</a>
+      <a href="https://github.com/Khaleelur-Rahman" class="btn btn-ghost">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>KHALEELUR RAHMAN — BACKEND ENGINEER — SINGAPORE</footer>
+
+<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+<script>
+  // smooth vertical scroll (Lenis)
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let lenis = null;
+  if(!prefersReducedMotion){
+    lenis = new Lenis({
+      duration: 1.2,
+      easing: (t)=> Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: false,
+      touchMultiplier: 1.4,
+    });
+    function lenisRaf(time){
+      lenis.raf(time);
+      requestAnimationFrame(lenisRaf);
+    }
+    requestAnimationFrame(lenisRaf);
+  }
+
+  // Hamburger mobile nav toggle
+  const hamburger = document.getElementById('navHamburger');
+  const mobileNav = document.getElementById('mobileNav');
+  if(hamburger && mobileNav){
+    hamburger.addEventListener('click', ()=>{
+      const open = hamburger.classList.toggle('open');
+      mobileNav.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    mobileNav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', ()=>{
+        hamburger.classList.remove('open');
+        mobileNav.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach((anchor)=>{
+    anchor.addEventListener('click', (e)=>{
+      const id = anchor.getAttribute('href');
+      if(!id || id === '#') return;
+      const target = document.querySelector(id);
+      if(!target) return;
+      e.preventDefault();
+      if(lenis){
+        lenis.scrollTo(target, { offset: -72, duration: 1.25 });
+      } else {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // section snap scroll — one wheel gesture moves to prev/next section
+  if(lenis){
+    const SNAP_OFFSET = 72;
+    const snapSections = Array.from(document.querySelectorAll('.hero, .section, .fulltime'));
+    let snapLocked = false;
+
+    function nearestSectionIndex(){
+      const probe = window.scrollY + SNAP_OFFSET + 40;
+      let idx = 0;
+      snapSections.forEach((sec, i)=>{
+        if(sec.offsetTop <= probe + 1) idx = i;
+      });
+      return idx;
+    }
+
+    function snapToSection(idx){
+      if(idx < 0 || idx >= snapSections.length || snapLocked) return;
+      snapLocked = true;
+      lenis.scrollTo(snapSections[idx], {
+        offset: -SNAP_OFFSET,
+        duration: 1.2,
+        lock: true,
+        onComplete: ()=> setTimeout(()=>{ snapLocked = false; }, 350),
+      });
+    }
+
+    window.addEventListener('wheel', (e)=>{
+      if(snapLocked){ e.preventDefault(); return; }
+      if(e.target.closest('[data-lenis-prevent]')) return;
+      if(e.target.closest('#formation')) return;
+      if(Math.abs(e.deltaY) < 22) return;
+
+      e.preventDefault();
+      const idx = nearestSectionIndex();
+      const next = e.deltaY > 0
+        ? Math.min(idx + 1, snapSections.length - 1)
+        : Math.max(idx - 1, 0);
+      if(next !== idx) snapToSection(next);
+    }, {passive:false});
+  }
+  // floating stadium-light particles
+  const lightsWrap = document.getElementById('lights');
+  for(let i=0;i<24;i++){
+    const s = document.createElement('span');
+    s.style.left = Math.random()*100 + 'vw';
+    s.style.bottom = (Math.random()*20) + 'vh';
+    s.style.animationDelay = (Math.random()*14) + 's';
+    s.style.animationDuration = (10 + Math.random()*10) + 's';
+    lightsWrap.appendChild(s);
+  }
+
+  // custom cursor — ball everywhere except clickable items (pointer only)
+  const customCursor = document.getElementById('customCursor');
+  const CLICKABLE_SEL = 'a, button, .btn, .pack, .evo-card, .contact-mini a, .jersey, .form-btn';
+  if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    window.addEventListener('mousemove', (e)=>{
+      customCursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+      customCursor.style.opacity = '1';
+      customCursor.classList.toggle('no-ball', !!e.target.closest(CLICKABLE_SEL));
+    }, {passive:true});
+    document.addEventListener('mouseleave', ()=> customCursor.style.opacity='0');
+  }
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach((entry, i)=>{
+      if(entry.isIntersecting){
+        setTimeout(()=> entry.target.classList.add('in-view'), i%6 * 70);
+        io.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.15});
+  revealEls.forEach(el=> io.observe(el));
+
+  // pack opening
+  const pack = document.getElementById('pack');
+  const cardFrame = document.getElementById('cardFrame');
+  const tiltHint = document.getElementById('tiltHint');
+
+  function countUp(el, target, duration){
+    const start = performance.now();
+    function step(now){
+      const p = Math.min((now-start)/duration, 1);
+      const eased = 1 - Math.pow(1-p, 3);
+      el.textContent = Math.round(eased * target);
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function openPack(){
+    pack.classList.add('opened');
+    setTimeout(()=>{
+      cardFrame.classList.add('revealed');
+      countUp(document.getElementById('ovrNum'), 89, 1200);
+      document.querySelectorAll('.count').forEach(el=>{
+        countUp(el, parseInt(el.dataset.target,10), 1200);
+      });
+      setTimeout(()=> tiltHint.classList.add('show'), 700);
+    }, 350);
+    pack.removeEventListener('click', openPack);
+  }
+  pack.addEventListener('click', openPack);
+
+  // auto-open shortly after load if user hasn't interacted
+  setTimeout(()=>{ if(!cardFrame.classList.contains('revealed')) openPack(); }, 2600);
+
+  // mouse tilt on revealed card
+  const stage = document.getElementById('cardStage');
+  stage.addEventListener('mousemove', (e)=>{
+    if(!cardFrame.classList.contains('revealed')) return;
+    const rect = cardFrame.getBoundingClientRect();
+    const x = (e.clientX - rect.left)/rect.width - 0.5;
+    const y = (e.clientY - rect.top)/rect.height - 0.5;
+    cardFrame.style.transform = `scale(1) rotateY(${x*16}deg) rotateX(${-y*16}deg)`;
+  });
+  stage.addEventListener('mouseleave', ()=>{
+    if(cardFrame.classList.contains('revealed')) cardFrame.style.transform = 'scale(1) rotateY(0deg) rotateX(0deg)';
+  });
+
+  // ===== FUT EVOLUTIONS CHAIN =====
+  function logoImg(domain, alt, fallback, directUrl){
+    const fb = fallback || domain.slice(0,2).toUpperCase();
+    if(directUrl){
+      return `<img src="${directUrl}" alt="${alt}" width="48" height="48" decoding="async" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';"><span class="fb" style="display:none">${fb}</span>`;
+    }
+    return `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" srcset="https://www.google.com/s2/favicons?domain=${domain}&sz=128 1x, https://www.google.com/s2/favicons?domain=${domain}&sz=256 2x" alt="${alt}" width="48" height="48" decoding="async" onerror="this.onerror=null;this.src='https://logo.clearbit.com/${domain}';this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';};"><span class="fb" style="display:none">${fb}</span>`;
+  }
+
+  const EVOLUTIONS = [
+    {
+      id:'meta', ovr:72, prevOvr:0, pos:'CM', tag:'ACADEMY', up:'+72',
+      club:'Meta ABCS', domain:'meta.com', fallback:'MT',
+      role:'Fellow · Singapore', dates:'Jan – Feb 2024', badge:'ACADEMY CALL-UP',
+      highlight:'+5 CS IQ',
+      bullets:[
+        'Handpicked for Meta\'s Above & Beyond Computer Science program (ABCS program).',
+        '5 weeks of advanced problem-solving, technical mentorship, and career workshops with Meta engineers, that led me to secure multiple interview opprtunities and ace them.'
+      ]
+    },
+    {
+      id:'govtech', ovr:78, prevOvr:72, pos:'CDM', tag:'EVO I', up:'+6',
+      club:'GovTech', domain:'tech.gov.sg', fallback:'GT', logoUrl:'https://banner2.cleanpng.com/20180619/cg/aa6zd4cp8.webp',
+      role:'Software Engineer Intern · Singapore', dates:'Apr – Nov 2024', badge:'LOAN SPELL',
+      highlight:'+25% OCR ACC',
+      bullets:[
+        'Spearheaded OCR feature launch by improving processing accuracy and boosting model performance by 25%.',
+        'Designed scalable AWS + Terraform infrastructure for consistent dev/staging deployments, which was adopted by the team in future releases.',
+        'Built Playwright E2E test suites, increasing coverage by 70%, which helped the team catch regressions early.'
+      ]
+    },
+    {
+      id:'ninja', ovr:82, prevOvr:78, pos:'CAM', tag:'EVO II', up:'+4',
+      club:'NinjaTools AI', domain:'ninjatools.ai', fallback:'NT',
+      role:'Software Engineer · San Francisco', dates:'Jan – Mar 2025', badge:'LOAN — ABROAD',
+      highlight:'+50% TRAFFIC',
+      bullets:[
+        'Engineered SEO-driven free tools from high-traffic trends which led to an overall 50% traffic increase on the website.',
+        'Instrumented Sentry + structured logs, cutting production error rates by 40%.'
+      ]
+    },
+    {
+      id:'simpleai', ovr:85, prevOvr:82, pos:'CM', tag:'EVO III', up:'+3',
+      club:'SimpleAI', domain:'simpleai.sg', fallback:'SA',
+      role:'Software Engineer Intern · Singapore', dates:'May – Jul 2025', badge:'LOAN SPELL',
+      highlight:'-25% LATENCY',
+      bullets:[
+        'Refactored async job queues in Node.js with caching which led to 25% latency drop across 50k+ docs.',
+        'Designed reusable LLM prompt templates and dynamic slot-fillers for domain contexts.'
+      ]
+    },
+    {
+      id:'tiktok-intern', ovr:87, prevOvr:85, pos:'LW', tag:'EVO IV', up:'+2',
+      club:'TikTok Shop', domain:'tiktok.com', fallback:'TT',
+      role:'Backend Engineer Intern · Singapore', dates:'Aug 2025 – Jul 2026', badge:'LOAN SPELL',
+      highlight:'-LATENCY SEA',
+      bullets:[
+        'Contributed to backend services powering TikTok Shop marketplace ops across Southeast Asia.',
+        'Built high-throughput distributed caching for the product catalog API which enabled faster responses for millions of users.'
+      ]
+    },
+    {
+      id:'tiktok-ft', ovr:89, prevOvr:87, pos:'LW', tag:'EVO V', up:'+2',
+      club:'TikTok Shop', domain:'tiktok.com', fallback:'TT',
+      role:'Backend Engineer · Singapore', dates:'Aug 2026 – Present', badge:'PERMANENT TRANSFER',
+      highlight:'SIGNED ✓',
+      bullets:[
+        'Signed permanently to TikTok Shop\'s e-commerce backend team.',
+        'Continuing distributed caching and cross-region latency work at production scale.'
+      ]
+    }
+  ];
+
+  // ===== INTERACTIVE PITCH WITH DRAG-AND-DROP SKILLS =====
+  const SKILLS = [
+    // ATT — Frontend / Mobile
+    { id:'react',      short:'React',    rating:92, pos:'ATT', tier:'fwd', cat:'Frontend' },
+    { id:'nextjs',     short:'Next.js',  rating:89, pos:'ATT', tier:'fwd', cat:'Frontend' },
+    { id:'tailwind',   short:'Tailwind', rating:87, pos:'ATT', tier:'fwd', cat:'Frontend' },
+    { id:'flutter',    short:'Flutter',  rating:75, pos:'ATT', tier:'fwd', cat:'Mobile'   },
+    { id:'html/css',   short:'HTML/CSS', rating:82, pos:'ATT', tier:'fwd', cat:'Mobile'   },
+    // MID — Languages / Backend / API
+    { id:'cpp',        short:'C/C++',    rating:97, pos:'MID', tier:'mid', cat:'Languages' },
+    { id:'python',     short:'Python',   rating:94, pos:'MID', tier:'mid', cat:'Languages' },
+    { id:'go',         short:'Go',       rating:91, pos:'MID', tier:'mid', cat:'Languages' },
+    { id:'java',       short:'Java',     rating:94, pos:'MID', tier:'mid', cat:'Languages' },
+    { id:'rust',       short:'Rust',     rating:70, pos:'MID', tier:'mid', cat:'Languages' },
+    { id:'springboot', short:'Spring',   rating:93, pos:'MID', tier:'mid', cat:'Backend'  },
+    { id:'nodejs',     short:'Node.js',  rating:81, pos:'MID', tier:'mid', cat:'Backend'  },
+    { id:'rest',       short:'REST',     rating:95, pos:'MID', tier:'mid', cat:'API'      },
+    { id:'oauth',      short:'OAuth',    rating:88, pos:'MID', tier:'mid', cat:'API'      },
+    // DEF — Cloud / Databases / DevOps / Workflow
+    { id:'aws',        short:'AWS',      rating:91, pos:'DEF', tier:'def', cat:'Cloud'    },
+    { id:'azure',      short:'Azure',    rating:84, pos:'DEF', tier:'def', cat:'Cloud'    },
+    { id:'terraform',  short:'Terraform',  rating:87, pos:'DEF', tier:'def', cat:'Cloud'    },
+    { id:'docker',     short:'Docker',   rating:91, pos:'DEF', tier:'def', cat:'DevOps'   },
+    { id:'playwright', short:'Playwright', rating:89, pos:'DEF', tier:'def', cat:'DevOps'   },
+    { id:'cicd',       short:'CI/CD',    rating:88, pos:'DEF', tier:'def', cat:'DevOps'   },
+    { id:'postgresql', short:'PgSQL',    rating:92, pos:'DEF', tier:'def', cat:'Database' },
+    { id:'mysql',      short:'MySQL',    rating:87, pos:'DEF', tier:'def', cat:'Database' },
+    { id:'mongodb',    short:'Mongo',    rating:85, pos:'DEF', tier:'def', cat:'Database' },
+    { id:'git',        short:'Git',      rating:97, pos:'DEF', tier:'def', cat:'Workflow' },
+    { id:'github',     short:'GitHub',   rating:95, pos:'DEF', tier:'def', cat:'Workflow' },
+    // GK — Architecture
+    { id:'sysdesign',  short:'SysDesign',  rating:91, pos:'GK',  tier:'gk',  cat:'Arch'    },
+    { id:'microsvc',   short:'Microsvc',   rating:89, pos:'GK',  tier:'gk',  cat:'Arch'    },
+    { id:'tdd',        short:'TDD',        rating:86, pos:'GK',  tier:'gk',  cat:'Testing' },
+  ];
+
+  // Formations: rows go top→bottom = ATT→MID→DEF→GK, each entry is the position type
+  const FORMATIONS = {
+    '4-3-3':   { rows:[['ATT','ATT','ATT'],['MID','MID','MID'],['DEF','DEF','DEF','DEF'],['GK']] },
+    '4-2-4':   { rows:[['ATT','ATT','ATT','ATT'],['MID','MID'],['DEF','DEF','DEF','DEF'],['GK']] },
+    '3-5-2':   { rows:[['ATT','ATT'],['MID','MID','MID','MID','MID'],['DEF','DEF','DEF'],['GK']] },
+    '5-3-2':   { rows:[['ATT','ATT'],['MID','MID','MID'],['DEF','DEF','DEF','DEF','DEF'],['GK']] },
+    '4-4-2':   { rows:[['ATT','ATT'],['MID','MID','MID','MID'],['DEF','DEF','DEF','DEF'],['GK']] },
+    '3-4-3':   { rows:[['ATT','ATT','ATT'],['MID','MID','MID','MID'],['DEF','DEF','DEF'],['GK']] },
+    '5-4-1':   { rows:[['ATT'],['MID','MID','MID','MID'],['DEF','DEF','DEF','DEF','DEF'],['GK']] },
+    '4-1-4-1': { rows:[['ATT'],['MID','MID','MID','MID'],['MID'],['DEF','DEF','DEF','DEF'],['GK']] },
+  };
+
+  const POS_COLORS = {
+    ATT:{ bg:'rgba(212,175,55,0.26)', glow:'rgba(212,175,55,0.7)', text:'#F2DFA0' },
+    MID:{ bg:'rgba(91,140,255,0.26)', glow:'rgba(91,140,255,0.7)',  text:'#8EAFFF' },
+    DEF:{ bg:'rgba(224,87,79,0.26)',  glow:'rgba(224,87,79,0.7)',   text:'#F08080' },
+    GK: { bg:'rgba(60,179,113,0.26)', glow:'rgba(60,179,113,0.7)', text:'#7FCFA0' },
+  };
+
+  function makeJerseyEl({ rating, short, pos }) {
+    const pc = POS_COLORS[pos] || POS_COLORS.MID;
+    const el = document.createElement('div');
+    el.className = 'jersey j-filled';
+    el.draggable = true;
+    el.style.setProperty('--jbg',   pc.bg);
+    el.style.setProperty('--jglow', pc.glow);
+    el.style.setProperty('--jtext', pc.text);
+    el.innerHTML = `<span class="j-rating">${rating}</span><span class="j-name">${short}</span><span class="j-pos">${pos}</span>`;
+    return el;
+  }
+
+  function makeEmptySlot(posType) {
+    const pc = POS_COLORS[posType] || POS_COLORS.MID;
+    const el = document.createElement('div');
+    el.className = 'jersey j-empty';
+    el.dataset.posType = posType;
+    el.style.setProperty('--jbg',   pc.bg.replace(/[\d.]+\)$/, '0.1)'));
+    el.style.setProperty('--jglow', pc.glow.replace(/[\d.]+\)$/, '0.3)'));
+    el.style.setProperty('--jtext', pc.text);
+    el.innerHTML = `<span class="j-placeholder">${posType}</span>`;
+    return el;
+  }
+
+  (function initPitch(){
+    const formSelector = document.getElementById('formationSelector');
+    const pitchGrid    = document.getElementById('pitchGrid');
+    const skillsPool   = document.getElementById('skillsPool');
+    const teamOvrEl    = document.getElementById('teamOvr');
+    const teamPlacedEl = document.getElementById('teamPlaced');
+    if(!formSelector || !pitchGrid || !skillsPool) return;
+
+    let currentFormation = '4-3-3';
+    let assignments = {};
+    let draggingSkillId = null;
+
+    function save(){}
+
+    function updateOvr(){
+      const placed = Object.values(assignments).map(id => SKILLS.find(s => s.id === id)).filter(Boolean);
+      const total  = FORMATIONS[currentFormation].rows.flat().length;
+      if(teamOvrEl) teamOvrEl.textContent = placed.length ? Math.round(placed.reduce((s,sk) => s + sk.rating, 0) / placed.length) : '--';
+      if(teamPlacedEl) teamPlacedEl.textContent = `${placed.length} / ${total} placed`;
+    }
+
+    function attachDragStart(el, skill, fromPlayer){
+      el.addEventListener('dragstart', e => {
+        draggingSkillId = skill.id;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('skillId', skill.id);
+        if(fromPlayer != null) e.dataTransfer.setData('fromPlayer', String(fromPlayer));
+        // jersey-shaped drag ghost
+        const ghost = makeJerseyEl(skill);
+        ghost.style.cssText += ';position:fixed;top:-9999px;left:-9999px;pointer-events:none;';
+        document.body.appendChild(ghost);
+        e.dataTransfer.setDragImage(ghost, 44, 53);
+        setTimeout(() => ghost.remove(), 200);
+        setTimeout(() => { el.style.opacity = '0.35'; }, 0);
+      });
+      el.addEventListener('dragend', () => { el.style.opacity = ''; draggingSkillId = null; render(); });
+    }
+
+    function renderFormationButtons(){
+      formSelector.innerHTML = '';
+      Object.keys(FORMATIONS).forEach(form => {
+        const btn = document.createElement('button');
+        btn.className = 'form-btn' + (form === currentFormation ? ' active' : '');
+        btn.textContent = form;
+        btn.addEventListener('click', () => { currentFormation = form; assignments = {}; render(); });
+        formSelector.appendChild(btn);
+      });
+    }
+
+    function renderPitch(){
+      pitchGrid.innerHTML = '';
+      const formation = FORMATIONS[currentFormation];
+      let pNum = 1;
+
+      formation.rows.forEach(row => {
+        const rowEl = document.createElement('div');
+        rowEl.className = 'pitch-row';
+
+        row.forEach(posType => {
+          const num     = pNum++;
+          const skillId = assignments[num];
+          const skill   = skillId ? SKILLS.find(s => s.id === skillId) : null;
+
+          let jEl;
+          if(skill){
+            jEl = makeJerseyEl(skill);
+            attachDragStart(jEl, skill, num);
+          } else {
+            jEl = makeEmptySlot(posType);
+          }
+          jEl.dataset.playerNum = num;
+          jEl.dataset.posType   = posType;
+
+          jEl.addEventListener('dragover', e => {
+            e.preventDefault();
+            const dragging = draggingSkillId ? SKILLS.find(s => s.id === draggingSkillId) : null;
+            if(dragging && dragging.pos !== posType){
+              jEl.classList.remove('j-dragover');
+              jEl.classList.add('j-invalid');
+            } else {
+              jEl.classList.add('j-dragover');
+              jEl.classList.remove('j-invalid');
+            }
+          });
+          jEl.addEventListener('dragleave', () => {
+            jEl.classList.remove('j-dragover', 'j-invalid');
+          });
+          jEl.addEventListener('drop', e => {
+            e.preventDefault();
+            jEl.classList.remove('j-dragover', 'j-invalid');
+            const sid   = e.dataTransfer.getData('skillId');
+            const fromP = e.dataTransfer.getData('fromPlayer');
+            if(!sid) return;
+            const sk = SKILLS.find(s => s.id === sid);
+            if(!sk || sk.pos !== posType){
+              jEl.classList.add('j-reject');
+              setTimeout(() => jEl.classList.remove('j-reject'), 300);
+              return;
+            }
+            if(fromP) delete assignments[fromP];
+            const prev = Object.entries(assignments).find(([,v]) => v === sid);
+            if(prev) delete assignments[prev[0]];
+            assignments[num] = sid;
+            save(); render();
+          });
+
+          rowEl.appendChild(jEl);
+        });
+
+        pitchGrid.appendChild(rowEl);
+      });
+      updateOvr();
+    }
+
+    function renderSkillsPool(){
+      skillsPool.innerHTML = '';
+      const assigned = new Set(Object.values(assignments));
+      const cats = {};
+      SKILLS.forEach(s => {
+        if(assigned.has(s.id)) return;
+        if(!cats[s.cat]) cats[s.cat] = [];
+        cats[s.cat].push(s);
+      });
+
+      if(Object.keys(cats).length === 0){
+        skillsPool.innerHTML = '<div class="pool-empty">Full squad on the pitch!</div>';
+      } else {
+        Object.entries(cats).forEach(([cat, skills]) => {
+          const group = document.createElement('div');
+          group.className = 'pool-group';
+          const label = document.createElement('div');
+          label.className = 'pool-cat-label';
+          label.textContent = cat;
+          group.appendChild(label);
+          const row = document.createElement('div');
+          row.className = 'pool-row';
+          skills.forEach(skill => {
+            const jEl = makeJerseyEl(skill);
+            attachDragStart(jEl, skill, null);
+            row.appendChild(jEl);
+          });
+          group.appendChild(row);
+          skillsPool.appendChild(group);
+        });
+      }
+
+      skillsPool.addEventListener('dragover', e => e.preventDefault());
+      skillsPool.addEventListener('drop', e => {
+        e.preventDefault();
+        const fromP = e.dataTransfer.getData('fromPlayer');
+        if(fromP){ delete assignments[fromP]; save(); render(); }
+      });
+    }
+
+    function render(){
+      renderFormationButtons();
+      renderPitch();
+      renderSkillsPool();
+    }
+
+    render();
+  })();
+
+  (function initEvoChain(){
+    const scroll = document.getElementById('evoScroll');
+    const detail = document.getElementById('evoDetail');
+    const pathFill = document.getElementById('evoPathFill');
+    const pathNodes = document.getElementById('evoPathNodes');
+    if(!scroll) return;
+
+    let activeIdx = 0;
+    const cards = [];
+    let scrollLock = false;
+    let scrollLockTimer = null;
+    let autoPlayTimer = null;
+    let userPausedUntil = 0;
+    let sectionInView = false;
+    let autoAdvancing = false;
+    const AUTO_DWELL = 3400;
+    const SCROLL_MS = 1000;
+
+    function lockScrollSync(ms=SCROLL_MS){
+      scrollLock = true;
+      clearTimeout(scrollLockTimer);
+      scrollLockTimer = setTimeout(()=>{ scrollLock = false; }, ms);
+    }
+
+    function scrollCardIntoView(card){
+      const cardLeft = card.offsetLeft;
+      const cardWidth = card.offsetWidth;
+      const target = cardLeft - (scroll.clientWidth / 2) + (cardWidth / 2);
+      lockScrollSync(SCROLL_MS);
+      scroll.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+    }
+
+    function stopAutoPlay(){
+      if(autoPlayTimer){ clearTimeout(autoPlayTimer); autoPlayTimer = null; }
+    }
+
+    function scheduleAutoPlay(){
+      stopAutoPlay();
+      if(!sectionInView || Date.now() < userPausedUntil) return;
+      autoPlayTimer = setTimeout(()=>{
+        if(Date.now() < userPausedUntil){ scheduleAutoPlay(); return; }
+        autoAdvancing = true;
+        const next = (activeIdx + 1) % EVOLUTIONS.length;
+        setActive(next, false, false);
+        setTimeout(()=>{
+          autoAdvancing = false;
+          scheduleAutoPlay();
+        }, SCROLL_MS + 200);
+      }, AUTO_DWELL);
+    }
+
+    function startAutoPlay(){
+      scheduleAutoPlay();
+    }
+
+    function pauseAutoPlay(ms=10000){
+      userPausedUntil = Date.now() + ms;
+      stopAutoPlay();
+      setTimeout(()=>{ if(sectionInView) startAutoPlay(); }, ms);
+    }
+
+    function emitBallAtIndex(idx){
+      const nodes = pathNodes.querySelectorAll('.evo-node');
+      const node = nodes[idx];
+      if(!node) return;
+      const bar = pathNodes.getBoundingClientRect();
+      const dot = node.getBoundingClientRect();
+      const pct = (dot.left + dot.width / 2 - bar.left) / bar.width;
+      window.dispatchEvent(new CustomEvent('evoProgress', { detail: pct }));
+    }
+
+    EVOLUTIONS.forEach((evo, i)=>{
+      if(i > 0){
+        const link = document.createElement('div');
+        link.className = 'evo-link' + (i <= activeIdx ? ' lit' : '');
+        link.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h12M13 7l5 5-5 5" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        scroll.appendChild(link);
+      }
+
+      const card = document.createElement('article');
+      card.className = 'evo-card' + (i === activeIdx ? ' active' : i < activeIdx ? ' past' : ' future');
+      card.dataset.idx = i;
+      card.innerHTML = `
+        <div class="evo-card-body">
+          <div class="evo-outer evo-clip">
+            <div class="evo-inner evo-clip">
+              <div class="evo-tag-row">
+                <span class="evo-tag">${evo.tag}</span>
+                <span class="evo-up">${evo.up}</span>
+              </div>
+              <div class="evo-rating-block">
+                <div class="evo-ovr" data-target="${evo.ovr}">${evo.prevOvr || '—'}</div>
+                <div class="evo-pos">${evo.pos}</div>
+              </div>
+              <div class="evo-crest">${logoImg(evo.domain, evo.club, evo.fallback, evo.logoUrl)}</div>
+              <div class="evo-club">${evo.club}</div>
+              <div class="evo-foot">
+                <div class="evo-highlight">${evo.highlight}</div>
+                <div class="evo-dates">${evo.dates}</div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      card.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        pauseAutoPlay(12000);
+        setActive(i, true, true);
+      });
+      scroll.appendChild(card);
+      cards.push(card);
+
+      const node = document.createElement('span');
+      node.className = 'evo-node' + (i <= activeIdx ? ' lit' : '');
+      pathNodes.appendChild(node);
+    });
+
+    function renderDetail(idx){
+      const e = EVOLUTIONS[idx];
+      detail.innerHTML = `
+        <div class="evo-detail-crest">${logoImg(e.domain, e.club, e.fallback, e.logoUrl)}</div>
+        <div>
+          <h3>${e.club}</h3>
+          <div class="evo-detail-meta">
+            <span class="role">${e.role}</span>
+            <span>${e.dates}</span>
+            <span style="color:var(--gold)">${e.badge}</span>
+          </div>
+          <ul>${e.bullets.map(b=>`<li>${b}</li>`).join('')}</ul>
+        </div>`;
+      detail.style.animation = 'none';
+      detail.offsetHeight;
+      detail.style.animation = '';
+    }
+
+    function countOvr(el, from, to){
+      el.classList.add('counting');
+      const start = performance.now();
+      function step(now){
+        const p = Math.min((now - start) / 700, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(from + (to - from) * eased);
+        if(p < 1) requestAnimationFrame(step);
+        else el.classList.remove('counting');
+      }
+      requestAnimationFrame(step);
+    }
+
+    function setActive(idx, animate=true, fromUser=false){
+      activeIdx = idx;
+      const links = scroll.querySelectorAll('.evo-link');
+      const nodes = pathNodes.querySelectorAll('.evo-node');
+
+      cards.forEach((c, i)=>{
+        c.classList.remove('active','past','future','evo-reveal');
+        if(i === idx) c.classList.add('active');
+        else if(i < idx) c.classList.add('past');
+        else c.classList.add('future');
+
+        const ovrEl = c.querySelector('.evo-ovr');
+        if(i === idx && animate){
+          c.classList.add('evo-reveal');
+          countOvr(ovrEl, EVOLUTIONS[i].prevOvr || 0, EVOLUTIONS[i].ovr);
+        } else {
+          ovrEl.textContent = i <= idx ? EVOLUTIONS[i].ovr : (EVOLUTIONS[i].prevOvr || '—');
+        }
+      });
+
+      links.forEach((l, i)=> l.classList.toggle('lit', i + 1 <= idx));
+      nodes.forEach((n, i)=> n.classList.toggle('lit', i <= idx));
+
+      const pct = idx / Math.max(EVOLUTIONS.length - 1, 1) * 100;
+      pathFill.style.width = pct + '%';
+
+      const card = cards[idx];
+      if(fromUser) lockScrollSync(SCROLL_MS);
+      scrollCardIntoView(card);
+      requestAnimationFrame(()=> requestAnimationFrame(()=> emitBallAtIndex(idx)));
+      renderDetail(idx);
+    }
+
+    // 3D tilt on hover for active/near cards
+    scroll.addEventListener('mousemove', (e)=>{
+      cards.forEach(card=>{
+        if(!card.matches(':hover')) return;
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        const body = card.querySelector('.evo-card-body');
+        if(body) body.style.transform = `rotateY(${x * 14}deg) rotateX(${-y * 14}deg)`;
+      });
+    });
+    scroll.addEventListener('mouseleave', ()=>{
+      cards.forEach(card=>{
+        const body = card.querySelector('.evo-card-body');
+        if(body) body.style.transform = '';
+      });
+    });
+
+    // optional: sync on manual scroll only when not programmatic
+    let scrollTicking = false;
+    scroll.addEventListener('scroll', ()=>{
+      if(scrollLock || scrollTicking || autoAdvancing) return;
+      scrollTicking = true;
+      requestAnimationFrame(()=>{
+        if(!scrollLock){
+          const center = scroll.scrollLeft + scroll.clientWidth / 2;
+          let closest = 0, minDist = Infinity;
+          cards.forEach((c, i)=>{
+            const cx = c.offsetLeft + c.offsetWidth / 2;
+            const d = Math.abs(cx - center);
+            if(d < minDist){ minDist = d; closest = i; }
+          });
+          if(closest !== activeIdx) setActive(closest, true, false);
+        }
+        scrollTicking = false;
+      });
+    }, {passive:true});
+
+    window.addEventListener('resize', ()=> emitBallAtIndex(activeIdx));
+
+    const chainEl = document.getElementById('evoChain');
+    setActive(0, true, false);
+
+    const chainObs = new IntersectionObserver((entries)=>{
+      sectionInView = entries[0].isIntersecting;
+      if(sectionInView){
+        startAutoPlay();
+      } else {
+        stopAutoPlay();
+      }
+    }, {threshold:0.35});
+    chainObs.observe(chainEl);
+
+    // kick off if section is already visible on load
+    if(chainEl.getBoundingClientRect().top < window.innerHeight * 0.75){
+      sectionInView = true;
+      startAutoPlay();
+    }
+  })();
+
+  // three.js 3D football on evo strip — rolls along the evolution chain
+  (function(){
+    const canvas = document.getElementById('evoBallCanvas');
+    if(!canvas || typeof THREE === 'undefined') return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+    camera.position.set(0, 0.3, 5.5);
+
+    const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+    const key = new THREE.DirectionalLight(0xffffff, 0.95);
+    key.position.set(4, 6, 5);
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0xD4AF37, 0.55);
+    rim.position.set(-5, -1, -4);
+    scene.add(rim);
+    const fill = new THREE.PointLight(0x5FE3E0, 0.4, 12);
+    fill.position.set(0, -2, 3);
+    scene.add(fill);
+
+    const ballGeo = new THREE.IcosahedronGeometry(0.95, 2);
+    const ballMat = new THREE.MeshStandardMaterial({color:0xF3F0E4, flatShading:false, roughness:0.45, metalness:0.08});
+    const ball = new THREE.Mesh(ballGeo, ballMat);
+    scene.add(ball);
+
+    const seamMat = new THREE.LineBasicMaterial({color:0x0A1F16, transparent:true, opacity:0.55});
+    ball.add(new THREE.LineSegments(new THREE.EdgesGeometry(ballGeo), seamMat));
+
+    // evolution glow ring
+    const ringGeo = new THREE.TorusGeometry(1.15, 0.03, 8, 48);
+    const ringMat = new THREE.MeshBasicMaterial({color:0xD4AF37, transparent:true, opacity:0.35});
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = Math.PI / 2;
+    ball.add(ring);
+
+  const strip = document.querySelector('.evo-ball-strip');
+    let ballTarget = 0;
+    let ballCurrent = 0;
+    let ballTweenStart = 0;
+    let ballTweenFrom = 0;
+    const BALL_TWEEN_MS = 1100;
+
+    function easeInOutCubic(t){
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function worldXFromPct(pct){
+      const h = canvas.clientHeight || 88;
+      const w = canvas.clientWidth || 800;
+      const vFOV = camera.fov * Math.PI / 180;
+      const dist = camera.position.z;
+      const visibleW = 2 * Math.tan(vFOV / 2) * dist * (w / h);
+      return (pct - 0.5) * visibleW;
+    }
+
+    function resize(){
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      if(!w || !h) return;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    window.addEventListener('evoProgress', (e)=>{
+      if(typeof e.detail !== 'number') return;
+      ballTweenFrom = ballCurrent;
+      ballTarget = e.detail;
+      ballTweenStart = performance.now();
+    });
+
+    let t = 0;
+    function animate(now){
+      requestAnimationFrame(animate);
+      if(!now) now = performance.now();
+      t += 0.016;
+
+      if(ballTweenStart){
+        const p = Math.min((now - ballTweenStart) / BALL_TWEEN_MS, 1);
+        ballCurrent = ballTweenFrom + (ballTarget - ballTweenFrom) * easeInOutCubic(p);
+        if(p >= 1) ballTweenStart = 0;
+      } else {
+        ballCurrent = ballTarget;
+      }
+
+      const x = worldXFromPct(ballCurrent);
+      ball.position.x = x;
+      ball.position.y = Math.sin(t * 2.2) * 0.12;
+      ball.rotation.x += 0.014 + ballCurrent * 0.008;
+      ball.rotation.y += 0.028;
+      ring.rotation.z = t * 0.6;
+      ring.material.opacity = 0.25 + Math.sin(t * 3) * 0.12;
+
+      camera.position.x = x;
+      camera.lookAt(x, 0, 0);
+      renderer.render(scene, camera);
+    }
+    animate(performance.now());
+  })();
+</script>
+
+</body>
+</html>
