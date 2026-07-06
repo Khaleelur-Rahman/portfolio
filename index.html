@@ -220,7 +220,7 @@
     font-family:'JetBrains Mono'; font-size:0.56rem; letter-spacing:0.14em; color:var(--fs-cyan);
   }
 
-  .card-body{display:flex; gap:8px; position:relative; z-index:1; flex-shrink:0;}
+  .card-body{display:flex; gap:8px; position:relative; z-index:3; flex-shrink:0;}
   .card-left{display:flex; flex-direction:column; align-items:center; width:72px; flex-shrink:0;}
   .card-left .ovr{font-family:'Oswald'; font-weight:700; font-size:2.15rem; color:#fff; line-height:1;}
   .card-left .pos{font-family:'Oswald'; font-size:0.76rem; color:var(--fs-cyan); letter-spacing:0.05em; margin-bottom:4px;}
@@ -232,14 +232,14 @@
     background:linear-gradient(135deg,#000,#B3282D); margin-top:2px;
   }
 
-  .card-right{flex:1; position:relative; display:flex; align-items:center; justify-content:center; min-height:108px;}
-  .glyph{ width:130px; height:155px; opacity:1; animation: floaty 4s ease-in-out infinite; filter:drop-shadow(0 8px 22px rgba(0,0,0,0.55)); object-fit:cover; object-position:center 18%; border-radius:6px; }
-  .contact-photo{ display:block; max-width:260px; width:100%; border-radius:10px; object-fit:contain; border:2px solid rgba(212,175,55,0.35); margin:0 auto 28px; filter:drop-shadow(0 6px 20px rgba(0,0,0,0.45)); }
+  .card-right{ display:none; }
+  .glyph{ position:absolute; right:0; top:2px; width:185px; height:200px; object-fit:cover; object-position:center 15%; z-index:1; opacity:1; animation: floaty 4s ease-in-out infinite; filter:drop-shadow(-6px 12px 24px rgba(0,0,0,0.7)); }
+  .contact-photo{ display:block; width:200px; height:200px; border-radius:50%; object-fit:cover; object-position:center 20%; border:2px solid rgba(212,175,55,0.4); margin:0 auto 28px; filter:drop-shadow(0 6px 20px rgba(0,0,0,0.45)); }
 
-  .card-name{ text-align:center; font-family:'Oswald'; font-weight:700; font-size:1.35rem; letter-spacing:0.04em; color:#fff; margin-top:8px; position:relative; z-index:1; flex-shrink:0;}
+  .card-name{ text-align:center; font-family:'Oswald'; font-weight:700; font-size:1.35rem; letter-spacing:0.04em; color:#fff; margin-top:8px; position:relative; z-index:3; flex-shrink:0;}
   .card-stats{
     display:grid; grid-template-columns:1fr 1fr; column-gap:0; margin-top:10px; position:relative; z-index:1;
-    border-top:1px solid rgba(255,255,255,0.3); padding:10px 20px 0; flex-shrink:0;
+    border-top:1px solid rgba(255,255,255,0.3); padding:10px 20px 0; flex-shrink:0; position:relative; z-index:3;
     width:100%; max-width:100%;
   }
   .stat-col{display:flex; flex-direction:column; gap:6px; justify-content:space-between;}
@@ -734,6 +734,7 @@
     <div class="card-frame" id="cardFrame">
       <div class="card-outer card-clip">
         <div class="card-inner card-clip">
+          <img class="glyph" src="player.png" alt="Khaleelur Rahman">
           <div class="top-medal">KR</div>
           <div class="tier-pill">FUTURE STARS</div>
 
@@ -747,9 +748,6 @@
               <div class="club-ic">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Ionicons_logo-tiktok.svg/1280px-Ionicons_logo-tiktok.svg.png?_=20230423144016" alt="TikTok" width="64" height="64" decoding="async" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=tiktok.com&sz=128';">
               </div>
-            </div>
-            <div class="card-right">
-              <img class="glyph" src="player.jpg" alt="Khaleelur Rahman">
             </div>
           </div>
 
